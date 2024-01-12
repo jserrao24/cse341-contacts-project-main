@@ -4,5 +4,5 @@ router.get('/', (req, res) => {
     //#swagger.tags=['Hello world']
     res.send('hello world');
 });
-router.use("/contacts", require('./contacts'));
+router.use("/contacts", require('../contacts'));
 module.exports = router;
