@@ -1,1 +1,4 @@
-GET https://project1-txoy.onrender.com/contacts HTTP/1.1 apiKey: Ezl0961tEpx2UxTZ5v2uKFK91qdNAr5npRlMT1zLcE3Mg68Xwaj3N8Dyp1R8IvFenrVwHRllOUxF0Og00l0m9NcaYMtH6Bpgdv7N
+get https://cse341-jared.onrender.com/awesome HTTP/1.1
+
+###
+get https://jserrao24-cse341-contacts-project-main.onrender.com/ HTTP/1.1
