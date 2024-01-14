@@ -3,12 +3,18 @@ const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
-//#swagger.tags=['Contacs']
-    const result = await mongodb.getDatabase().db().collection('contacts').find();
-    result.toArray().then((contacts) => {
+    console.log('Reached getAll function');
+    //#swagger.tags=['Contacs']
+    try {
+        const result = await mongodb.getDatabase().db('Contacts').collection('Contacts').find();
+        const contacts = await result.toArray();
+        console.log('Fetched contacts:', contacts);
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(contacts);
-    });
+    } catch (error) {
+        console.error('Error fetching contacts:', error);
+        res.status(500).json(error.message || 'Some error occurred while fetching contacts.');
+    }
 };
 
 const getSingle = async (req, res) => {
