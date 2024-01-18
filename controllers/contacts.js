@@ -22,7 +22,7 @@ const getSingle = async (req, res) => {
     const contactId = new ObjectId(req.params.id);
     
     try {
-        const result = await mongodb.getDatabase().db().collection('contacts').findOne({ _id: contactId });
+        const result = await mongodb.getDatabase().db().collection('Contacts').findOne({ _id: contactId });
 
         if (!result) {
             return res.status(404).json({ error: 'Contact not found' });
