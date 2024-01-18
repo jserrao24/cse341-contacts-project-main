@@ -82,25 +82,43 @@ const updateContact = async (req, res) => {
         favoriteColor: req.body.favoriteColor,
         birthday: req.body.birthday
     };
-    const response = await mongodb.getDatabase().db().collection('contacts').replaceOne({_id: contactId}, contact);
-    if (response.modifiedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error ocurred while updating the user.');
+
+    try {
+        const response = await mongodb.getDatabase().db().collection('Contacts').replaceOne({ _id: contactId }, contact);
+
+        if (response.modifiedCount > 0) {
+            res.status(204).send();
+        } else {
+            // Check for the presence of the error property
+            const errorMessage = response.error || 'Some error ocurred while updating the user.';
+            res.status(500).json(errorMessage);
+        }
+    } catch (error) {
+        // If an exception occurs, log the error and send a 500 response
+        console.error('Error updating contact:', error);
+        res.status(500).json(error.message || 'Some error ocurred while updating the user.');
     }
 };
 
 const deleteContact = async (req, res) => {
     //#swagger.tags=['Contacs']
     const contactId = new ObjectId(req.params.id);
-    const response = await mongodb.getDatabase().db().collection('contacts').deleteOne({_id: contactId});
-    if (response.deleteCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error ocurred while updating the user.');
+
+    try {
+        const response = await mongodb.getDatabase().db().collection('Contacts').deleteOne({_id: contactId});
+
+        if (response.deletedCount > 0) {
+            res.status(204).send();
+        } else {
+            // If no document was deleted, consider it as not found
+            res.status(404).json({ error: 'Contact not found' });
+        }
+    } catch (error) {
+        // If an exception occurs, log the error and send a 500 response
+        console.error('Error deleting contact:', error);
+        res.status(500).json(error.message || 'Some error occurred while deleting the contact.');
     }
 };
-
 module.exports = {
     getAll,
     getSingle,
