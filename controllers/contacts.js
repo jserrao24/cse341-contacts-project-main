@@ -37,19 +37,38 @@ const getSingle = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
-    //#swagger.tags=['Contacs']
-    const contact = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        favoriteColor: req.body.favoriteColor,
-        birthday: req.body.birthday
-    };
-    const response = await mongodb.getDatabase().db().collection('contacts').insertOne(contact);
-    if (response.acknowledged) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error ocurred while updating the user.');
+    //#swagger.tags=['Contacts']
+    try {
+        // Logging request body for debugging
+        console.log('Request Body:', req.body);
+
+        const contact = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            favoriteColor: req.body.favoriteColor,
+            birthday: req.body.birthday
+        };
+
+        // Logging contact for debugging
+        console.log('Contact:', contact);
+
+        const response = await mongodb.getDatabase().db().collection('Contacts').insertOne(contact);
+
+        // Logging response for debugging
+        console.log('Response:', response);
+
+        if (response.acknowledged) {
+            res.status(204).send();
+        } else {
+            // Improved error handling with detailed logging
+            console.error('Error: Insert operation not acknowledged');
+            res.status(500).json('Some error occurred while updating the user.');
+        }
+    } catch (error) {
+        // Improved error handling with detailed logging
+        console.error('Error:', error);
+        res.status(500).json(error.message || 'Some error occurred while updating the user.');
     }
 };
 
