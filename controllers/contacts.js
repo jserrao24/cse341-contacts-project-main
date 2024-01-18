@@ -18,13 +18,22 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
-//#swagger.tags=['Contacs']
+    //#swagger.tags=['Contacs']
     const contactId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().db().collection('contacts').find({ _id: contactId });
-    result.toArray().then((contacts) => {
+    
+    try {
+        const result = await mongodb.getDatabase().db().collection('contacts').findOne({ _id: contactId });
+
+        if (!result) {
+            return res.status(404).json({ error: 'Contact not found' });
+        }
+
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(contacts[0]);
-    });
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error fetching contact:', error);
+        res.status(500).json(error.message || 'Some error occurred while fetching the contact.');
+    }
 };
 
 const createContact = async (req, res) => {
