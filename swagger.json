@@ -5,7 +5,7 @@
     "description": "Contacts Api",
     "version": "1.0.0"
   },
-  "host": "localhost:4000",
+  "host": "https://jserrao24-cse341-contacts-project-main.onrender.com",
   "basePath": "/",
   "schemes": [
     "https",
